@@ -1,9 +1,11 @@
 #include "raylib.h"
+#include "src/include/utils.h"
 
 const int screenWidth = 800;
 const int screenHeight = 450;
+const float resolution = 0.5f;
 
-void UpdateDrawFrame(void);
+void update();
 
 int main(void)
 {
@@ -12,20 +14,20 @@ int main(void)
 
     while (!WindowShouldClose())
     {
-        UpdateDrawFrame();
+        update();
     }
 
     CloseWindow();
     return 0;
 }
 
-void UpdateDrawFrame(void)
+void update()
 {
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
 
-    DrawPixel(10, 10, PINK);
+    drawPixel(0, 0, 0.1f, PINK);
 
     EndDrawing();
 }
