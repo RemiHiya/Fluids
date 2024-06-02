@@ -5,7 +5,7 @@
 
 const int screenWidth = 800;
 const int screenHeight = 450;
-const float resolution = .1f;
+const float resolution = 1.0f;
 
 
 int main(void)
@@ -19,7 +19,6 @@ int main(void)
         BeginDrawing();
         ClearBackground(RAYWHITE);
         display(buffer);
-        drawPixel(0, 0, 0.1f, PINK);
         EndDrawing();
     }
 
