@@ -54,5 +54,5 @@ Color dir2col(double x, double y) {
     int g = (int)((g_prime + m) * 255);
     int b = (int)((b_prime + m) * 255);
 
-    return CLITERAL(Color){r, g, b, 255};
+    return CLITERAL(Color){r, g, b, (int) len * 10};
 }

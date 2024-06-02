@@ -20,8 +20,8 @@ buffer *init(int w, int h, float res) {
     buffer->vbuffer = malloc(height * sizeof(double*));
 
     for (int i = 0; i < height; ++i) {
-        buffer->ubuffer = malloc(width * sizeof(double));
-        buffer->vbuffer = malloc(width * sizeof(double));
+        buffer->ubuffer[i] = calloc(width, sizeof(double));
+        buffer->vbuffer[i] = calloc(width, sizeof(double));
     }
 
     return buffer;
@@ -30,8 +30,9 @@ buffer *init(int w, int h, float res) {
 void display(buffer *buffer) {
     for (int i = 0; i < buffer->h; ++i) {
         for (int j = 0; j < buffer->w; ++j) {
-            drawPixel(j, i, buffer->res, CLITERAL(Color){j%10 * 25, i%10 * 25, 0, 255});
-            buffer->vbuffer[i][j];
+            //Color c = dir2col(j-buffer->w/2, i-buffer->h/2);
+            Color c = dir2col(buffer->ubuffer[i][j], buffer->vbuffer[i][j]);
+            drawPixel(j, i, buffer->res, c);
         }
     }
 }

@@ -1,11 +1,10 @@
 #include "raylib.h"
 #include <stdio.h>
-#include "src/include/utils.h"
 #include "src/include/simulation.h"
 
 const int screenWidth = 800;
 const int screenHeight = 450;
-const float resolution = 1.0f;
+const float resolution = 0.1f;
 
 
 int main(void)
@@ -16,8 +15,9 @@ int main(void)
     buffer *buffer = init(screenWidth, screenHeight, resolution);
     printf("Res : %f\nW : %d\nH : %d", buffer->res, buffer->w, buffer->h);
     while (!WindowShouldClose()) {
+        update(buffer, GetFrameTime());
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
         display(buffer);
         EndDrawing();
     }
