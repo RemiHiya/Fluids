@@ -7,11 +7,13 @@
 
 typedef struct BUFFER_T {
     int w, h;
-    float **ubuffer;
-    float **vbuffer;
+    float res;
+    double **ubuffer;
+    double **vbuffer;
 } buffer;
 
 buffer *init(int w, int h, float res);
+void display(buffer *buffer);
 void update(buffer *buffer, float dt);
 void gravity(buffer *buffer, float dt);
 void project(buffer *buffer);
