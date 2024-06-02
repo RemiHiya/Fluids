@@ -12,4 +12,8 @@ typedef struct BUFFER_T {
 } buffer;
 
 buffer *init(int w, int h, float res);
+void update(buffer *buffer, float dt);
+void gravity(buffer *buffer, float dt);
+void project(buffer *buffer);
+void advect(buffer *buffer);
 #endif //FLUIDS_SIMULATION_H
