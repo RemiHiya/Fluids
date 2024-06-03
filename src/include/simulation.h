@@ -16,6 +16,6 @@ buffer *init(int w, int h, float res);
 void display(buffer *buffer);
 void update(buffer *buffer, float dt);
 void gravity(buffer *buffer, float dt);
-void project(buffer *buffer);
-void advect(buffer *buffer);
+void project(buffer *buffer, unsigned int n);
+void advect(buffer *buffer, float dt);
 #endif //FLUIDS_SIMULATION_H
