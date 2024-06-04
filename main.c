@@ -5,7 +5,7 @@
 
 const int screenWidth = 1600;
 const int screenHeight = 800;
-const float resolution = 0.1f;
+const float resolution = 0.05f;
 
 
 int main(void)
@@ -21,20 +21,22 @@ int main(void)
 
         fluid->dt = GetFrameTime();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-            fluidAddDensity(fluid, GetMouseX() * resolution, GetMouseY() * resolution, 255);
-            fluidAddVelocity(fluid, GetMouseX()*resolution, GetMouseY()*resolution, 10, 0);
+            fluidAddDensity(fluid, GetMouseX() * resolution, GetMouseY() * resolution, 500);
+            fluidAddVelocity(fluid, GetMouseX()*resolution, GetMouseY()*resolution, GetMouseDelta().x, GetMouseDelta().y);
         }
         fluidStep(fluid);
         fluidFadeDensity(fluid, w, h, GetFrameTime());
 
         BeginDrawing();
         ClearBackground(BLACK);
-        fluidRenderDensity(fluid, w, h, resolution);
+        //fluidRenderDensity(fluid, w, h, resolution);
+        fluidRenderVelocity(fluid, w, h, resolution);
 
         char *t = malloc(16 * sizeof(char));
         sprintf(t, "%0.1f", 1.0f/GetFrameTime());
         DrawText(t, 5, 0, 15, RED);
         EndDrawing();
+
     }
 
     fluidFree(fluid);

@@ -25,6 +25,7 @@ fluid *fluidCreate(int w, int h, float diffusion, float viscosity, float dt);
 void fluidFree(fluid *fluid);
 void fluidStep(fluid *fluid);
 void fluidRenderDensity(fluid *fluid, int w, int h, float res);
+void fluidRenderVelocity(fluid *fluid, int w, int h, float res);
 void fluidFadeDensity(fluid *fluid, int w, int h, float dt);
 void fluidAddDensity(fluid *fluid, int x, int y, float amount);
 void fluidAddVelocity(fluid *fluid, int x, int y, float amountX, float amountY);

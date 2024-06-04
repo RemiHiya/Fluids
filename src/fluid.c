@@ -73,7 +73,7 @@ void fluidRenderDensity(fluid *fluid, int w, int h, float res) {
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
             float d = fluid->density[IX(j, i)];
-            drawPixel(j, i, res, CLITERAL(Color){255, 255, 255, (int) d});
+            drawPixel(j, i, res, CLITERAL(Color){255, 255, 255, (int) MIN(255, d)});
         }
     }
 }
@@ -81,9 +81,20 @@ void fluidRenderDensity(fluid *fluid, int w, int h, float res) {
 void fluidFadeDensity(fluid *fluid, int w, int h, float dt) {
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
-            float d = fluid->density[IX(j, i)] -= 1 * dt;
+            float d = fluid->density[IX(j, i)] -= 10 * dt;
             fluid->density[IX(j, i)] = d<0 ? 0 : d;
 
+        }
+    }
+}
+
+void fluidRenderVelocity(fluid *fluid, int w, int h, float res) {
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            Color c = dir2col(fluid->Vx[IX(j, i)], fluid->Vy[IX(j, i)]);
+            float d = fluid->density[IX(j, i)];
+            c.a = (int) d;
+            drawPixel(j, i, res, c);
         }
     }
 }
