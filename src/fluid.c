@@ -92,8 +92,7 @@ void fluidRenderVelocity(fluid *fluid, int w, int h, float res) {
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
             Color c = dir2col(fluid->Vx[IX(j, i)], fluid->Vy[IX(j, i)]);
-            float d = fluid->density[IX(j, i)];
-            c.a = (int) d;
+            c.a = (int) MIN(255, fluid->density[IX(j, i)]);
             drawPixel(j, i, res, c);
         }
     }

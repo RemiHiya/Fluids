@@ -5,7 +5,7 @@
 
 const int screenWidth = 1600;
 const int screenHeight = 800;
-const float resolution = 0.05f;
+const float resolution = 0.07f;
 
 
 int main(void)
@@ -13,8 +13,8 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "Fluid Simulation");
     SetTargetFPS(60);
 
-    int w = screenWidth * resolution;
-    int h = screenHeight * resolution;
+    int w = screenWidth * resolution +1;
+    int h = screenHeight * resolution +1;
     fluid *fluid = fluidCreate(w, h, 0, 0, 0);
 
     while (!WindowShouldClose()) {
@@ -36,7 +36,6 @@ int main(void)
         sprintf(t, "%0.1f", 1.0f/GetFrameTime());
         DrawText(t, 5, 0, 15, RED);
         EndDrawing();
-
     }
 
     fluidFree(fluid);
