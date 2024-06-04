@@ -1,36 +1,43 @@
 #include "raylib.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/include/simulation.h"
+#include "src/include/fluid.h"
 
 const int screenWidth = 1600;
 const int screenHeight = 800;
-const float resolution = 0.05f;
+const float resolution = 0.1f;
 
 
 int main(void)
 {
     InitWindow(screenWidth, screenHeight, "Fluid Simulation");
-    SetTargetFPS(30);
+    SetTargetFPS(60);
 
-    buffer *buffer = init(screenWidth, screenHeight, resolution);
-    printf("Res : %f\nW : %d\nH : %d", buffer->res, buffer->w, buffer->h);
+    int w = screenWidth * resolution;
+    int h = screenHeight * resolution;
+    fluid *fluid = fluidCreate(w, h, 0, 0, 0);
+
     while (!WindowShouldClose()) {
-        update(buffer, GetFrameTime());
-        buffer->ubuffer[15][15] = 255;
-        buffer->vbuffer[15][15] = 0;
-        buffer->ubuffer[15][50] = -255;
-        buffer->vbuffer[15][50] = 0;
+
+        fluid->dt = GetFrameTime();
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            fluidAddDensity(fluid, GetMouseX() * resolution, GetMouseY() * resolution, 255);
+            fluidAddVelocity(fluid, GetMouseX()*resolution, GetMouseY()*resolution, 10, 0);
+        }
+        fluidStep(fluid);
+        fluidFadeDensity(fluid, w, h, GetFrameTime());
+
         BeginDrawing();
         ClearBackground(BLACK);
-        display(buffer);
+        fluidRenderDensity(fluid, w, h, resolution);
+
         char *t = malloc(16 * sizeof(char));
-        sprintf(t, "%0.1f, %0.1f", 1.0f/GetFrameTime(), buffer->ubuffer[15][30]);
-        DrawText(t, 0, 0, 15, RED);
+        sprintf(t, "%0.1f", 1.0f/GetFrameTime());
+        DrawText(t, 5, 0, 15, RED);
         EndDrawing();
     }
 
+    fluidFree(fluid);
     CloseWindow();
-    free(buffer);
     return 0;
 }

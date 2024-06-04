@@ -21,9 +21,13 @@ typedef struct FLUID_T {
     float *Vy0;
 } fluid;
 
-fluid *fluidCreate(int w, int h, int diffusion, int viscosity, float dt);
+fluid *fluidCreate(int w, int h, float diffusion, float viscosity, float dt);
 void fluidFree(fluid *fluid);
 void fluidStep(fluid *fluid);
+void fluidRenderDensity(fluid *fluid, int w, int h, float res);
+void fluidFadeDensity(fluid *fluid, int w, int h, float dt);
+void fluidAddDensity(fluid *fluid, int x, int y, float amount);
+void fluidAddVelocity(fluid *fluid, int x, int y, float amountX, float amountY);
 static void set_bnd(int b, float *x, int w, int h);
 static void lin_solve(int b, float *x, float *x0, float a, float c, int iter, int w, int h);
 static void diffuse (int b, float *x, float *x0, float diff, float dt, int iter, int w, int h);

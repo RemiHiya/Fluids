@@ -3,19 +3,20 @@
 //
 
 #include "include/fluid.h"
+#include "include/utils.h"
 #include <stdlib.h>
 #include <math.h>
 
 #define IX(x, y) ((x) + (y) * w)
 
-fluid *fluidCreate(int w, int h, int diffusion, int viscosity, float dt) {
+fluid *fluidCreate(int w, int h, float diffusion, float viscosity, float dt) {
     fluid *fluid = malloc(sizeof(*fluid));
 
     fluid->sizeX = w;
     fluid->sizeY = h;
     fluid->dt = dt;
-    fluid->diff = (float) diffusion;
-    fluid->visc = (float) viscosity;
+    fluid->diff = diffusion;
+    fluid->visc = viscosity;
 
     fluid->s = calloc(w * h, sizeof(float));
     fluid->density = calloc(w * h, sizeof(float));
@@ -68,18 +69,36 @@ void fluidStep(fluid *fluid) {
     advect(0, density, s, Vx, Vy, dt, w, h);
 }
 
+void fluidRenderDensity(fluid *fluid, int w, int h, float res) {
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            float d = fluid->density[IX(j, i)];
+            drawPixel(j, i, res, CLITERAL(Color){255, 255, 255, (int) d});
+        }
+    }
+}
+
+void fluidFadeDensity(fluid *fluid, int w, int h, float dt) {
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            float d = fluid->density[IX(j, i)] -= 1 * dt;
+            fluid->density[IX(j, i)] = d<0 ? 0 : d;
+
+        }
+    }
+}
 
 void fluidAddDensity(fluid *fluid, int x, int y, float amount) {
     int w = fluid->sizeX;
     fluid->density[IX(x, y)] += amount;
 }
 
-void fluidAddVelocity(fluid *cube, int x, int y, float amountX, float amountY) {
-    int w = cube->sizeX;
+void fluidAddVelocity(fluid *fluid, int x, int y, float amountX, float amountY) {
+    int w = fluid->sizeX;
     int index = IX(x, y);
 
-    cube->Vx[index] += amountX;
-    cube->Vy[index] += amountY;
+    fluid->Vx[index] += amountX;
+    fluid->Vy[index] += amountY;
 }
 
 static void diffuse (int b, float *x, float *x0, float diff, float dt, int iter, int w, int h) {
@@ -180,11 +199,11 @@ static void advect(int b, float *d, float *d0,  float *velX, float *velY, float 
 }
 
 static void set_bnd(int b, float *x, int w, int h) {
-    for(int i = 1; i < h - 1; i++) {
+    for(int i = 1; i < w - 1; i++) {
         x[IX(i, 0  )] = b == 2 ? -x[IX(i, 1  )] : x[IX(i, 1  )];
         x[IX(i, h-1)] = b == 2 ? -x[IX(i, h-2)] : x[IX(i, h-2)];
     }
-    for(int j = 1; j < w - 1; j++) {
+    for(int j = 1; j < h - 1; j++) {
         x[IX(0  , j)] = b == 1 ? -x[IX(1  , j)] : x[IX(1  , j)];
         x[IX(w-1, j)] = b == 1 ? -x[IX(w-2, j)] : x[IX(w-2, j)];
     }
