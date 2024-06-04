@@ -35,7 +35,9 @@ add_executable(${PROJECT_NAME} main.c
         src/utils.c
         src/simulation.c
         src/include/simulation.h
-        src/include/simulation.h)
+        src/include/simulation.h
+        src/fluid.c
+        src/include/fluid.h)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
